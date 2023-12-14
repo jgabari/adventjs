@@ -19,14 +19,27 @@ console.log(cyberReindeer(road, time))
 
 function cyberReindeer(road, time) {
     let result = [road]
+    let count = [];
+    let position = road.indexOf("|");
+    while (position !== -1) {
+        count.push(position);
+        position = road.indexOf("|", position + 1);
+    }
     for (let i = 1; i < time; i++) {
         if (i === 5) {
             road = road.replaceAll('|', '*')
         }
         if (road.includes('S.')) {
             road = road.replace('S.', '.S')
-        }else if (road.includes('S*')) {
+        } else if (road.includes('S*')) {
             road = road.replace('S*', '.S')
+        }
+        if (i >= 5) {
+            for (let j of count) {
+                if (road[j] !== 'S') {
+                    road = road.slice(0, j) + '*' + road.slice(j + 1)
+                }
+            }
         }
         result.push(road)
     }
