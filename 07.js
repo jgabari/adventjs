@@ -58,3 +58,5 @@ function drawGift(size, symbol) {
     result += '\n'
     return result;
 }
+
+console.log(drawGift(6, '*'))
