@@ -31,24 +31,19 @@ console.log(optimizeIntervals([
 ])) // [[1, 2], [3, 4], [5, 6]]
 
 function optimizeIntervals(intervals) {
-    let result = [intervals[0]]
+    let result = []
+    intervals.sort((a, b) => a[0] - b[0])
+    console.log("intervals: " + intervals)
+    let current = intervals[0]
     for (let i = 1; i < intervals.length; i++) {
-        let init = intervals[i][0]
-        let end = intervals[i][1]
-        for (let j = result.length - 1; j >= 0; j--) {
-            let prevInit = result[j][0]
-            let prevEnd = result[j][1]
-            if (result.includes(intervals[i])) {
-                result.splice(result.indexOf(intervals[i]), 1)
-            }
-            if (end < prevInit || init > prevEnd) {
-                result.push(intervals[i])
-            } else if (init < prevInit && end < prevEnd) {
-                result[j][0] = init
-            } else if (end > prevEnd && init > prevInit) {
-                result[j][1] = end
-            }
+        if (current[1] >= intervals[i][0]) {
+            current[1] = Math.max(current[1], intervals[i][1])
+        } else {
+            result.push(current)
+            current = intervals[i]
         }
+        console.log("result: " + result)
     }
-    return result.sort()
+    result.push(current)
+    return result
 }
