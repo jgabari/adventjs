@@ -33,26 +33,22 @@ console.log(optimizeIntervals([
 function optimizeIntervals(intervals) {
     let result = [intervals[0]]
     for (let i = 1; i < intervals.length; i++) {
-        const prevInit = result[result.length - 1][0]
-        const prevEnd = result[result.length - 1][1]
-        const init = intervals[i][0]
-        const end = intervals[i][1]
-        if (init < prevInit) {
-            if (end < prevInit) {
-                result[result.length - 1] = [init, end]
-                result.push([prevInit, prevEnd])
-            } else if (end < prevEnd) {
-                result[result.length - 1] = [init, prevEnd]
-            } else {
-                result[result.length - 1] = [init, end]
+        let init = intervals[i][0]
+        let end = intervals[i][1]
+        for (let j = result.length - 1; j >= 0; j--) {
+            let prevInit = result[j][0]
+            let prevEnd = result[j][1]
+            if (result.includes(intervals[i])) {
+                result.splice(result.indexOf(intervals[i]), 1)
             }
-        } else if (init < prevEnd) {
-            if (end > prevEnd) {
-                result[result.length - 1] = [prevInit, end]
+            if (end < prevInit || init > prevEnd) {
+                result.push(intervals[i])
+            } else if (init < prevInit && end < prevEnd) {
+                result[j][0] = init
+            } else if (end > prevEnd && init > prevInit) {
+                result[j][1] = end
             }
-        } else if (init > prevEnd) {
-            result.push([init, end])
         }
     }
-    return result
+    return result.sort()
 }
