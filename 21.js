@@ -29,9 +29,17 @@ console.log(findBalancedSegment([1, 1, 1]))
 function findBalancedSegment(message) {
     let start = 0
     let len = 0
-    let count = {0: 0, 1: 0}
-    for (let i = 0; i < message.length; i++) {
-        count[message[i]]++
+    for (let i = 2; i <= message.length; i++) {
+        for (let j = 0; j <= message.length - i; j++) {
+            let count = {0:0, 1:0}
+            let newarr = message.slice(j, j+i)
+            for (let x of newarr) count[x]++
+            if (count[0] === count[1] && i > len) {
+                start = j
+                len = i
+            }
+        }
     }
-    return result
+    if (len === 0) return []
+    return [start, start + len - 1]
 }
