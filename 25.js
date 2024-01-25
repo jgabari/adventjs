@@ -24,24 +24,65 @@ El mapa siempre tendrá una posición inicial para Santa Claus.
 Los números de los niños nunca se repiten.
 */
 
-const map = `.....1....
+const result = travelDistance(`.....1....
 ..S.......
 ..........
 ....3.....
-......2...`
-
-const result = travelDistance(map)
-console.log(result) // -> 12 km
-/*
-De la S al niño 1: 4 movimientos
-Del niño 1 al 2: 5 movimientos
-Del niño 2 al 3: 3 movimientos
-Total: 12 movimientos
-*/
+......2...`)
+console.log(result) // -> 12
 
 const result2 = travelDistance(`..S.1...`)
 console.log(result2) // -> 2
 
+// function travelDistance(map) {
+//     let result = 0
+//     let streetLength = 0
+//     if (map.includes('\n')) {
+//         streetLength = map.indexOf('\n')
+//     } else {
+//         streetLength = map.length
+//     }
+//     const mapArray = map.split('\n')
+//     const straightMap = mapArray.join('')
+//     for (let i = 1;; i++) {
+//         let distance = Math.abs(straightMap.indexOf(i.toString()) - straightMap.indexOf('S'))
+//         if (distance >= streetLength) {
+//             let streets = Math.floor(distance/streetLength)
+//             result += streets + (distance - (streets*streetLength))
+//         } else {
+//             result += distance
+//         }
+//         if (!(straightMap.includes(i+1))) {
+//             break
+//         }
+//     }
+//     return result
+// }
+
 function travelDistance(map) {
-    return 0
+    let result = 0
+    const mapArray = map.split('\n')
+    const mapString = mapArray.join('')
+    for (let i = 1;; i++) {
+        let kidDoor = -1
+        let kidStreet = -1
+        let santaDoor = -1
+        let santaStreet = -1
+        for (let j = 0; j < mapArray.length; j++) {
+            let st = mapArray[j]
+            if (st.includes(i)) {
+                kidDoor = st.indexOf(i)
+                kidStreet = j
+                mapArray[kidStreet].replace(i, 'S')
+            }
+            if (st.includes('S')) {
+                santaDoor = st.indexOf('S')
+                santaStreet = j
+                mapArray[santaStreet].replace('S', '.')
+            }
+        }
+        result += (Math.abs(kidDoor - santaDoor)) + (Math.abs(kidStreet - santaStreet))
+        if (!(mapString.includes(i+1))) break
+    }
+    return result
 }
