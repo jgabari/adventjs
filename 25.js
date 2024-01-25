@@ -34,34 +34,10 @@ console.log(result) // -> 12
 const result2 = travelDistance(`..S.1...`)
 console.log(result2) // -> 2
 
-// function travelDistance(map) {
-//     let result = 0
-//     let streetLength = 0
-//     if (map.includes('\n')) {
-//         streetLength = map.indexOf('\n')
-//     } else {
-//         streetLength = map.length
-//     }
-//     const mapArray = map.split('\n')
-//     const straightMap = mapArray.join('')
-//     for (let i = 1;; i++) {
-//         let distance = Math.abs(straightMap.indexOf(i.toString()) - straightMap.indexOf('S'))
-//         if (distance >= streetLength) {
-//             let streets = Math.floor(distance/streetLength)
-//             result += streets + (distance - (streets*streetLength))
-//         } else {
-//             result += distance
-//         }
-//         if (!(straightMap.includes(i+1))) {
-//             break
-//         }
-//     }
-//     return result
-// }
 
 function travelDistance(map) {
     let result = 0
-    const mapArray = map.split('\n')
+    let mapArray = map.split('\n')
     const mapString = mapArray.join('')
     for (let i = 1;; i++) {
         let kidDoor = -1
@@ -73,12 +49,12 @@ function travelDistance(map) {
             if (st.includes(i)) {
                 kidDoor = st.indexOf(i)
                 kidStreet = j
-                mapArray[kidStreet].replace(i, 'S')
+                mapArray[j] = mapArray[j].replace(i, 'S')
             }
             if (st.includes('S')) {
                 santaDoor = st.indexOf('S')
                 santaStreet = j
-                mapArray[santaStreet].replace('S', '.')
+                mapArray[j] = mapArray[j].replace('S', '.')
             }
         }
         result += (Math.abs(kidDoor - santaDoor)) + (Math.abs(kidStreet - santaStreet))
