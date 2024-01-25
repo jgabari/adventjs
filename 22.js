@@ -41,29 +41,35 @@ console.log(compile('--¿+++?')) // -2
 
 function compile(code) {
     let count = 0
+    let getback = -1
     for (let i = 0; i < code.length; i++) {
         const symbol = code[i]
-        let getback = -1
         switch (symbol) {
             case '+':
-                count++
+                count++;
                 break;
             case '*':
-                count += count
+                count += count;
                 break;
             case '-':
-                count--
+                count--;
                 break;
             case '%':
-                getback = i
+                getback = i;
                 break;
             case '<':
-                if (getback > -1) i = getback
+                if (getback > -1) {
+                    i = getback;
+                    getback = -1;
+                }
                 break;
             case '¿':
-                if (count <= 0) i = code.indexOf('?')
+                if (count <= 0) {
+                    i = code.indexOf('?');
+                }
                 break;
             case '?':
+                // No hacer nada
                 break;
         }
     }
